@@ -59,11 +59,14 @@ const articles = [
     id: 1,
     head: "About me",
     content: ["paragraph 1", "paragraph 2", "paragraph 3"],
+    imageUrl: "https://source.unsplash.com/random/900x600",
+    link: "Read more"
   },
   {
     id: 2,
     head: "Education",
     content: ["paragraph 1", "paragraph 2", "paragraph 3"],
+    imageUrl: "https://source.unsplash.com/random/900x600"
   },
   {
     id: 3,
@@ -76,6 +79,8 @@ const articles = [
       "But wait, there's more! In the realm of backend sorcery, I donned the cloak of Spring Boot and Actix Web, weaving intricate webs of RESTful APIs and handling requests with the finesse of a seasoned wizard. And let's not forget my dalliance with the enigmatic LangChain library for Python, a mystical tool that whispered secrets of natural language processing into my eager ears.",
       "When I'm not casting spells with my keyboard, you'll find me basking in the glow of my monitor, lost in the worlds of video games or indulging in the latest sci-fi/fantasy novels. And on weekends, I transform into a culinary wizard, conjuring up gourmet delights that would make Gordon Ramsay do a double-take.",
     ],
+    imageUrl: "https://source.unsplash.com/random/900x600",
+    link: "Read more"
   },
   {
     id: 4,
@@ -88,13 +93,30 @@ const articles = [
       "But fear not, dear reader, for my journey is far from over! With each passing day, I am driven by an insatiable hunger to push the boundaries of what is possible in the digital realm. Whether it be mastering the intricacies of ReactJS, Angular, or Spring Boot Actix Web, or delving into the enigmatic depths of the LangChain library for Python, I stand ready to embrace the challenges that lie ahead.",
       "So join me, fellow travelers, as we continue to unravel the mysteries of code and chart a course towards a future limited only by the bounds of our imagination. For in the ever-expanding cosmos of technology, the only limit is the limit we dare to set for ourselves. Onward, to infinity and beyond!",
     ],
+    imageUrl: "https://source.unsplash.com/random/900x600",
+    link: "Read more"
   },
 ];
 
+const thumbnailArticles = articles.map(art => ({
+  id: art.id,
+  head: art.head,
+  content: [art.content[0]],
+  imageUrl: art.imageUrl,
+  link: art.link,
+}));
+
 app.use(cors());
 
-app.get("/articles", (_, res) => {
-  res.json(articles);
+app.get("/articles", (req, res) => {
+  if (req.query.thumbnail) {
+    console.log(JSON.stringify(thumbnailArticles, undefined, 2));
+    res.json(thumbnailArticles);
+  }
+  else {
+    console.log(JSON.stringify(articles, undefined, 2));
+    res.json(articles);
+  }
 });
 
 app.get("/articles/:id", (req, res) => {
