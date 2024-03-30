@@ -258,7 +258,11 @@ function getArticle(id, language) {
   const art = articles.find((art) => art.id === id);
   if (art === undefined) return null;
   const body = art.body[language];
-  return body ?? null;
+  return {
+    id: art.id,
+    imageUrl: art.imageUrl,
+    ...body
+  } ?? null;
 }
 
 /**
@@ -312,7 +316,7 @@ app.get("/:lang/user", (_, res) => {
 });
 
 app.get("/perks", (_, res) => {
-  res.json(perks.sort((a, b) => getPerkValue(a.level) - getPerkValue(b.level)));
+  res.json(perks.sort((a, b) => getPerkValue(b.level) - getPerkValue(a.level)));
 });
 
 app.listen(PORT, () => {
