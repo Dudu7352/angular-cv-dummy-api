@@ -2,6 +2,7 @@
 
 import express from "express";
 import cors from "cors";
+import bodyParser from "body-parser";
 
 const app = express();
 const PORT = 3001;
@@ -288,6 +289,8 @@ function mapToArticles(multiLangArticles, language) {
     .filter((x) => x !== undefined);
 }
 
+const jsonParser = bodyParser.json();
+
 app.use(cors());
 
 app.get("/:lang/articles", (req, res) => {
@@ -318,6 +321,11 @@ app.get("/:lang/user", (_, res) => {
 app.get("/perks", (_, res) => {
   res.json(perks.sort((a, b) => getPerkValue(b.level) - getPerkValue(a.level)));
 });
+
+app.post("/message", jsonParser, (req, res) => {
+  console.log("New message: ", req.body);
+  res.json(req.body);
+})
 
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
